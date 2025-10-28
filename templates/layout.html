@@ -1,0 +1,63 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}GENUS{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'styles/layout.css' %}">
+</head>
+<body>
+    <aside class="menu" id="menu">
+        <button onclick="closeMenu()">
+            <i><img src="{% static 'assets/icons/x.png' %}" alt="Fechar-Menu"></i>
+        </button>
+    </aside>
+    <div class="overlay" id="overlay"> </div>
+        <header>
+            <nav class="nav-uol">
+                <img src="{% static 'assets/imgs/Logo-UOL.png' %}" alt="Logo-UOL">
+            </nav>
+            <div>
+                <nav class="nav-jc">
+                    <a href="{% url 'jornal:index' %}"><img src="{% static 'assets/imgs/Logo-JC.png' %}" alt="Logo-JC"></a>
+                    <div>
+                        <button onclick="openSearch()"> <i class="search-adjust"> <img src="{% static 'assets/icons/search.png' %}." alt="serach-icon"></i></button>
+                        <button class="menu-button" id="menuButton" onclick="openMenu()">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </button>
+                        {% if user.is_authenticated %}
+                            <a href=""><img src="" alt="Gamificacao"></a>
+                            <a href="./perfil.html"><i><img src="" alt="user-pic"></i></a>
+                        {% else %}
+                            <a href="{% url 'login' %}"><i><img src="{% static 'assets/icons/Avatar.png' %}" alt="Perfil-icon" class="icon-perfil"></i></a>
+                        {% endif %}
+                    </div>
+
+                </nav>
+                <div class="div-pesquisa" id="div-pesquisa">
+                    <section>
+                        <button class="pesquisar"><i class="search-adjust"><img src="{% static 'assets/icons/search.png' %}" alt="pesquisar"></i></button>
+                        <input type="text" name="barra-pesquisa" placeholder="pesquise aqui">
+                    </section>
+                    <!-- coloca as opcoes de pesquisa aqui dentro de um <p></p> -->
+                </div>
+            </div>
+        </header>
+
+        <main>
+            {% block content %}
+
+            {% endblock %}
+        </main>
+
+        <footer>
+
+        </footer>
+    
+    <script src="{% static 'scripts/layout.js' %}"></script>
+</body>
+</html>

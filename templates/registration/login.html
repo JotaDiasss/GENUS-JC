@@ -1,0 +1,44 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}GENUS{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'styles/login.css' %}">
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <nav class="nav-uol">
+                <img src="{% static 'assets/imgs/Logo-UOL.png' %}" alt="Logo-UOL">
+            </nav>
+            <nav class="nav-jc">
+                <a href="{% url 'jornal:index' %}"><img src="{% static 'assets/imgs/Logo-JC.png' %}" alt="Logo-JC"></a>
+                <a href="{% url 'jornal:index' %}"><i><img src="{% static 'assets/icons/backarrow.png' %}" alt="Voltar"></i></a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="div-container">
+                <section class="login-input">
+                    <input type="text" placeholder="Usuário">
+                    <i><img src="{% static 'assets/icons/login-avatar.png' %}" alt="Login"></i>
+                </section>
+                <section class="login-input">
+                    <input type="text" placeholder="Senha">
+                    <i><img src="{% static 'assets/icons/padlock.png' %}" alt="Senha"></i>
+                </section>
+                <button>Entrar</button>
+        </div>
+        <div class="footer">
+            <section>
+                <a href="">Esqueceu a senha</a>
+                <a href="{% url 'register' %}">Criar conta</a>
+            </section>
+        </div>
+    </main>
+    <script src="{% static 'scripts/login.js' %}"></script>
+</body>
+</html>
