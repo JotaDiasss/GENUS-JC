@@ -28,14 +28,6 @@ Thumbs.db
 *.sqlite3
 db.sqlite3
 
-# ---- ARQUIVOS DE COMPILAÇÃO DE FRONTEND ----
-node_modules/
-dist/
-build/
-staticfiles/
-static_root/
-media/
-
 # ---- AMBIENTES E VARIÁVEIS ----
 .env
 .env.local
