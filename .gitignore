@@ -28,10 +28,6 @@ Thumbs.db
 *.sqlite3
 db.sqlite3
 
-# ---- ARQUIVOS DE MIGRAÇÃO COMPILADOS ----
-*/migrations/__pycache__/
-*/migrations/*.pyc
-
 # ---- ARQUIVOS DE COMPILAÇÃO DE FRONTEND ----
 node_modules/
 dist/
