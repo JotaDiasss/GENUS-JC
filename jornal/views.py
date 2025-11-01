@@ -11,7 +11,9 @@ def lista_de_noticias(request):
 
 def pagina_noticias(request, slug):
     noticia = Noticia.objects.get(slug=slug)
-    return render(request, 'pagina_noticia.html', { 'noticia': noticia})
+    
+    # OBSERVAÇÃO: Corrigido o nome do template para usar o hífen.
+    return render(request, 'pagina-noticia.html', { 'noticia': noticia})
 
 def index(request):
     query = request.GET.get('q') 
@@ -53,7 +55,7 @@ def remover_dos_favoritos(request, noticia_id):
             favoritos_itens = Favoritos.objects.get(usuario=request.user, noticia=noticia)
             favoritos_itens.delete()
         except Favoritos.DoesNotExist:
-            pass  # O item não está na lista, não faz nada
+            pass 
 
     return redirect('jornal:favoritos')
 
@@ -68,4 +70,3 @@ def register(request):
         form = UserCreationForm()
     
     return render(request, 'registration/register.html', {'form': form})
-# Create your views here.

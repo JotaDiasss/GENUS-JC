@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.utils.text import slugify
 
 class Genero(models.Model):
     nome = models.CharField(max_length=100, unique=True, verbose_name="Gênero")
@@ -28,6 +29,11 @@ class Noticia(models.Model):
     )
     
     slug = models.SlugField(max_length=200, unique=True, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.titulo)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.titulo} : [{self.resumo}]"
