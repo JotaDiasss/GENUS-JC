@@ -1,29 +1,30 @@
-{% extends 'base.html' %}
+{% extends 'layout.html' %}
+{% load static %}
 
-{% block title %}
-    Notícias Favoritas
+{% block title %}Minhas Notícias Favoritas{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'styles/favoritos.css' %}">
 {% endblock %}
 
 {% block content %}
-    <section>
-        <h1>Notícias Favoritas</h1>
+<section class="pagina-favoritos">
+    <h1 class="titulo-principal">Minhas Notícias Favoritas</h1>
 
-        {% for noticia in favoritos %}
-            <article class="noticia">
-                <h2>
-                    <a href="{% url 'jornal:pagina_noticias' slug=noticia.slug %}">
-                        {{ noticia.titulo }}
-                    </a>
-                </h2>
-                <p>{{ noticia.data_publicacao }}</p>
-
-                <form action="{% url 'jornal:remover_dos_favoritos' noticia_id=noticia.id %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit">Remover dos Favoritos</button>
-                </form>
-            </article>
-        {% empty %}
-            <p>Você ainda não adicionou nenhuma notícia aos favoritos.</p>
-        {% endfor %}
-    </section>
-{% endblock content %}
+    {% if favoritos %}
+        <div class="favoritos-grid">
+            {% for noticia in favoritos %}
+                <article class="noticia-card">
+                    <h2 class="noticia-card-titulo">
+                        <a href="{% url 'jornal:pagina_noticias' noticia.slug %}">{{ noticia.titulo }}</a>
+                    </h2>
+                    <p class="noticia-card-resumo">{{ noticia.resumo }}</p>
+                    <a href="{% url 'jornal:pagina_noticias' noticia.slug %}" class="noticia-card-link">Leia mais</a>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p style="text-align: center; font-size: 1.1em;">Você ainda não adicionou nenhuma notícia aos favoritos.</p>
+    {% endif %}
+</section>
+{% endblock %}

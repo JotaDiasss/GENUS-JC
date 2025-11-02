@@ -299,8 +299,6 @@ footer .copyright {
     width: auto; 
     padding-left: 15px;
     padding-right: 15px;
-    
-    /* Faz a barra de rolagem ficar mais sutil (WebKit/Blink) */
     scrollbar-width: thin;
     scrollbar-color: #ccc #f8f9fa;
 }
@@ -327,4 +325,20 @@ footer .copyright {
 
 .lista-noticias.ultimas-noticias-scroll .noticia-card:last-child {
     margin-right: 0;
+}
+
+.btn-favorito {
+    border: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.btn-favorito.favorito-ativo {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.btn-favorito.favorito-ativo:hover {
+    background-color: #5a6268;
 }

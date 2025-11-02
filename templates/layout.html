@@ -15,6 +15,13 @@
         <button onclick="closeMenu()">
             <i><img src="{% static 'assets/icons/x.png' %}" alt="Fechar-Menu"></i>
         </button>
+        
+        <ul style="list-style: none; padding: 20px; font-size: 1.2em;">
+            <li style="margin-bottom: 15px;">
+                <a href="{% url 'jornal:favoritos' %}" style="text-decoration: none; color: #333;">Notícias Favoritas</a>
+            </li>
+        </ul>
+        
     </aside>
     <div class="overlay" id="overlay"> </div>
         <header>
@@ -25,7 +32,7 @@
                 <nav class="nav-jc">
                     <a href="{% url 'jornal:index' %}"><img src="{% static 'assets/imgs/Logo-JC.png' %}" alt="Logo-JC"></a>
                     <div>
-                        <button onclick="openSearch()"> <i class="search-adjust"> <img src="{% static 'assets/icons/search.png' %}." alt="serach-icon"></i></button>
+                        <button onclick="openSearch()"> <i class="search-adjust"> <img src="{% static 'assets/icons/search.png' %}" alt="serach-icon"></i></button>
                         <button class="menu-button" id="menuButton" onclick="openMenu()">
                             <div></div>
                             <div></div>
@@ -56,7 +63,7 @@
         </main>
 
         <footer>
-            </footer>
+        </footer>
     
     <script src="{% static 'scripts/layout.js' %}"></script>
 

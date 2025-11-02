@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.http import JsonResponse
+import json
 
 def lista_de_noticias(request):
     noticias = Noticia.objects.all().order_by('-data')
@@ -12,7 +14,16 @@ def lista_de_noticias(request):
 
 def pagina_noticias(request, slug):
     noticia = Noticia.objects.get(slug=slug)
-    return render(request, 'pagina-noticia.html', { 'noticia': noticia})
+    
+    is_favorito = False
+    if request.user.is_authenticated:
+        is_favorito = Favoritos.objects.filter(usuario=request.user, noticia=noticia).exists()
+        
+    context = {
+        'noticia': noticia,
+        'is_favorito': is_favorito
+    }
+    return render(request, 'pagina-noticia.html', context)
 
 def index(request):
     query = request.GET.get('q') 
@@ -44,7 +55,7 @@ def add_aos_fav(request, noticia_id):
     noticia = get_object_or_404(Noticia, pk=noticia_id)
     if not Favoritos.objects.filter(usuario=request.user, noticia=noticia).exists():
         Favoritos.objects.create(usuario=request.user, noticia=noticia)
-    return redirect('jornal:index')
+    return redirect('jornal:index') 
 
 @login_required
 def remover_dos_favoritos(request, noticia_id):
@@ -55,7 +66,6 @@ def remover_dos_favoritos(request, noticia_id):
             favoritos_itens.delete()
         except Favoritos.DoesNotExist:
             pass 
-
     return redirect('jornal:favoritos')
 
 def register(request):
@@ -80,7 +90,6 @@ def register(request):
     
     return render(request, 'registration/register.html')
 
-
 @login_required
 def configuracoes_conta(request):
     profile = request.user.profile
@@ -99,3 +108,18 @@ def configuracoes_conta(request):
         'generos_salvos': generos_salvos
     }
     return render(request, 'configuracoes.html', context)
+
+@login_required
+def toggle_favorito(request, noticia_id):
+    if request.method == 'POST':
+        noticia = get_object_or_404(Noticia, id=noticia_id)
+        
+        favorito, created = Favoritos.objects.get_or_create(usuario=request.user, noticia=noticia)
+        
+        if created:
+            return JsonResponse({'status': 'added'})
+        else:
+            favorito.delete()
+            return JsonResponse({'status': 'removed'})
+    
+    return JsonResponse({'status': 'error'}, status=400)
