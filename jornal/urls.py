@@ -1,11 +1,15 @@
 from django.urls import path
-from . import views  
+from . import views 
 
 app_name = 'jornal'
 
 urlpatterns = [
 
     path('noticia/<slug:slug>/', views.pagina_noticias, name='pagina_noticias'),
+    path('configuracoes/', views.configuracoes_conta, name='configuracoes_conta'), 
+
+   
+    path('register/', views.register, name='register'),
 
     path('adicionar-noticia/', views.add_aos_fav, name="add"),
     path('favoritos/', views.ver_favoritos, name='favoritos'), 

@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.utils.text import slugify
+# OBSERVAÇÃO: Imports necessários para o Profile
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class Genero(models.Model):
     nome = models.CharField(max_length=100, unique=True, verbose_name="Gênero")
@@ -65,3 +68,22 @@ class Favoritos(models.Model):
 
     def __str__(self):
         return f'{self.usuario.username} - {self.noticia.titulo}'
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+   
+    generos_favoritos = models.ManyToManyField(Genero, blank=True, related_name="perfis_favoritos")
+
+    def __str__(self):
+        return f'Perfil de {self.user.username}'
+
+# Função para criar um Perfil automaticamente quando um Usuário se registra
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+# Função para salvar o Perfil
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()

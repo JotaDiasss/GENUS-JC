@@ -21,25 +21,39 @@
         </div>
     </header>
     <main>
-        <div class="div-container">
-                <section class="login-input">
-                    <input type="text" placeholder="Email">
-                    <i><img src="{% static 'assets/icons/mail.png' %}" alt="Email"></i>
-                </section>
-                <section class="login-input">
-                    <input type="text" placeholder="Senha">
-                    <i><img src="{% static 'assets/icons/pencil.png' %}" alt="Senha"></i>
-                </section>
-                <section class="login-input">
-                    <input type="text" placeholder="Confirmar senha">
-                    <i><img src="{% static 'assets/icons/padlock.png' %}" alt="Confirmar"></i>
-                </section>
-                <section class="login-with">
-                    <a href="#"><img src="{% static 'assets/icons/Icon-google.png' %}" alt="Google"></a>
-                    <a href="#"><img src="{% static 'assets/icons/Icon-facebook.png' %}" alt="Facebook"></a>
-                </section>
-                <button>Entrar</button>
-        </div>
+        <form class="div-container" method="POST">
+            {% csrf_token %}
+
+            {% if messages %}
+                <ul class="messages" style="color: red; text-align: center; list-style: none; padding: 0; margin-bottom: 15px;">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <section class="login-input">
+                <input type="email" placeholder="Email" name="email" required>
+                <i><img src="{% static 'assets/icons/mail.png' %}" alt="Email"></i>
+            </section>
+            
+            <section class="login-input">
+                <input type="password" placeholder="Senha" name="password" required>
+                <i><img src="{% static 'assets/icons/pencil.png' %}" alt="Senha"></i>
+            </section>
+            
+            <section class="login-input">
+                <input type="password" placeholder="Confirmar senha" name="password2" required>
+                <i><img src="{% static 'assets/icons/padlock.png' %}" alt="Confirmar"></i>
+            </section>
+            
+            <section class="login-with">
+                <a href="#"><img src="{% static 'assets/icons/Icon-google.png' %}" alt="Google"></a>
+                <a href="#"><img src="{% static 'assets/icons/Icon-facebook.png' %}" alt="Facebook"></a>
+            </section>
+
+            <button type="submit">Criar Conta</button>
+        </form>
     </main>
     <script src="{% static 'scripts/register.js' %}"></script>
 </body>

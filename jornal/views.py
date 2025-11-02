@@ -1,9 +1,10 @@
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Noticia, Favoritos
+from .models import Noticia, Favoritos, Genero, Profile
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.models import User # OBSERVAÇÃO: Importado
+from django.contrib import messages # OBSERVAÇÃO: Importado
 
 def lista_de_noticias(request):
     noticias = Noticia.objects.all().order_by('-data')
@@ -11,8 +12,6 @@ def lista_de_noticias(request):
 
 def pagina_noticias(request, slug):
     noticia = Noticia.objects.get(slug=slug)
-    
-    # OBSERVAÇÃO: Corrigido o nome do template para usar o hífen.
     return render(request, 'pagina-noticia.html', { 'noticia': noticia})
 
 def index(request):
@@ -59,14 +58,51 @@ def remover_dos_favoritos(request, noticia_id):
 
     return redirect('jornal:favoritos')
 
+# --- OBSERVAÇÃO: VIEW DE REGISTRO REESCRITA SEM O forms.py ---
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('jornal:index')
-    else:
-        form = UserCreationForm()
+        # 1. Pega os dados manualmente do formulário
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        password2 = request.POST.get('password2')
+
+        # 2. Validação manual
+        if password != password2:
+            messages.error(request, 'As senhas não coincidem.')
+            return render(request, 'registration/register.html')
+
+        # Usaremos o email como username
+        if User.objects.filter(username=email).exists():
+            messages.error(request, 'Este email já está cadastrado.')
+            return render(request, 'registration/register.html')
+        
+        # 3. Cria o usuário
+        user = User.objects.create_user(username=email, email=email, password=password)
+        user.save()
+        
+        # 4. Loga o usuário e redireciona
+        login(request, user)
+        return redirect('jornal:index')
     
-    return render(request, 'registration/register.html', {'form': form})
+    # Se for GET, apenas mostra a página
+    return render(request, 'registration/register.html')
+
+
+@login_required
+def configuracoes_conta(request):
+    profile = request.user.profile
+    
+    if request.method == 'POST':
+        generos_selecionados_nomes = request.POST.getlist('genres')
+        generos_objs = Genero.objects.filter(nome__in=generos_selecionados_nomes)
+        profile.generos_favoritos.set(generos_objs)
+        return redirect('jornal:configuracoes_conta')
+
+    all_genres = Genero.objects.all()
+    generos_salvos = profile.generos_favoritos.all()
+    
+    context = {
+        'all_genres': all_genres,
+        'generos_salvos': generos_salvos
+    }
+    return render(request, 'configuracoes.html', context)

@@ -21,21 +21,33 @@
         </div>
     </header>
     <main>
-        <div class="div-container">
-                <section class="login-input">
-                    <input type="text" placeholder="Usuário">
-                    <i><img src="{% static 'assets/icons/login-avatar.png' %}" alt="Login"></i>
-                </section>
-                <section class="login-input">
-                    <input type="text" placeholder="Senha">
-                    <i><img src="{% static 'assets/icons/padlock.png' %}" alt="Senha"></i>
-                </section>
-                <button>Entrar</button>
-        </div>
+        
+        <form class="div-container" method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+
+            {% if form.errors %}
+                <div style="color: red; text-align: center; margin-bottom: 15px;">
+                    <p>Email ou senha inválidos.</p>
+                </div>
+            {% endif %}
+
+            <section class="login-input">
+                <input type="text" placeholder="Email" name="username" required>
+                <i><img src="{% static 'assets/icons/login-avatar.png' %}" alt="Login"></i>
+            </section>
+            
+            <section class="login-input">
+                <input type="password" placeholder="Senha" name="password" required>
+                <i><img src="{% static 'assets/icons/padlock.png' %}" alt="Senha"></i>
+            </section>
+            
+            <button type="submit">Entrar</button>
+        </form>
+
         <div class="footer">
             <section>
                 <a href="">Esqueceu a senha</a>
-                <a href="{% url 'register' %}">Criar conta</a>
+                <a href="{% url 'jornal:register' %}">Criar conta</a>
             </section>
         </div>
     </main>

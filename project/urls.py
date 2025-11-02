@@ -16,11 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from jornal import views as jornal_views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/register/', jornal_views.register, name='register'),
-   
+    
+    # OBSERVAÇÃO: Removida a linha 'accounts/register/' duplicada מכאן.
+    
+    # Esta linha cuida das URLs de login, logout, etc. (ex: /accounts/login/)
     path('accounts/', include('django.contrib.auth.urls')),
-    path('', include('jornal.urls', namespace='jornal')),
+    
+    # Esta linha inclui todas as URLs do seu app (ex: /register/, /configuracoes/, etc.)
+    path('', include('jornal.urls')),
 ]
