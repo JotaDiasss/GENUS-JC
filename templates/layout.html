@@ -40,7 +40,9 @@
                         </button>
                         {% if user.is_authenticated %}
                             <a href=""><img src="" alt="Gamificacao"></a>
-                            <a href="{% url 'jornal:configuracoes_conta' %}"><i><img src="" alt="user-pic"></i></a>
+                            
+                            <a href="{% url 'jornal:configuracoes_conta' %}"><i><img src="{% static 'assets/icons/Avatar.png' %}" alt="user-pic" class="icon-perfil"></i></a>
+                        
                         {% else %}
                             <a href="{% url 'login' %}"><i><img src="{% static 'assets/icons/Avatar.png' %}" alt="Perfil-icon" class="icon-perfil"></i></a>
                         {% endif %}

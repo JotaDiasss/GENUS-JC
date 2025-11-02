@@ -27,6 +27,8 @@ def pagina_noticias(request, slug):
 
 def index(request):
     query = request.GET.get('q') 
+    noticias_recomendadas = []
+    
     if query:
         noticias = Noticia.objects.filter(
             Q(titulo__icontains=query) |
@@ -35,8 +37,25 @@ def index(request):
         ).distinct().order_by('-data')
     else:
         noticias = Noticia.objects.all().order_by('-data')[:8]
+
+    if request.user.is_authenticated and not query:
+        try:
+            profile = request.user.profile
+            generos_favoritos = profile.generos_favoritos.all()
+
+            if generos_favoritos.exists():
+                
+                # Busca notícias apenas pelos gêneros, sem excluir
+                noticias_recomendadas = Noticia.objects.filter(
+                    generos__in=generos_favoritos
+                ).distinct().order_by('-data')[:8]
+
+        except Profile.DoesNotExist:
+            noticias_recomendadas = []
+            
     contexto = {
         'noticias': noticias,
+        'noticias_recomendadas': noticias_recomendadas,
         'query': query,
     }
     return render(request, 'index.html', contexto)
@@ -89,6 +108,7 @@ def register(request):
         return redirect('jornal:index')
     
     return render(request, 'registration/register.html')
+
 
 @login_required
 def configuracoes_conta(request):

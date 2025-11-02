@@ -34,4 +34,24 @@
         </div>
     </section>
 
+    {% if user.is_authenticated and noticias_recomendadas %}
+    <section class="noticias-recomendadas" style="margin-top: 40px;">
+        
+        <h1 class="titulo-principal">Recomendadas para Você</h1>
+
+        <div class="lista-noticias ultimas-noticias-scroll">
+            
+            {% for noticia in noticias_recomendadas %}
+                <article class="noticia-card">
+                    <h2 class="noticia-card-titulo">
+                        <a href="{% url 'jornal:pagina_noticias' noticia.slug %}">{{ noticia.titulo }}</a>
+                    </h2>
+                    <p class="noticia-card-resumo">{{ noticia.resumo }}</p>
+                    <a href="{% url 'jornal:pagina_noticias' noticia.slug %}" class="noticia-card-link">Leia mais</a>
+                </article>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
 {% endblock %}
