@@ -4,7 +4,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}GENUS{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'styles/layout.css' %}">
     
@@ -55,10 +55,15 @@
                     <form method="GET" action="{% url 'jornal:index' %}" style="width: 100%;">
                         <section>
                             <button type="submit" class="pesquisar"><i class="search-adjust"><img src="{% static 'assets/icons/search.png' %}" alt="pesquisar"></i></button>
-                            
                             <input type="text" name="q" placeholder="pesquise aqui">
                         </section>
                     </form>
+                    
+                    <div style="text-align: center; padding-top: 15px;">
+                        <a href="{% url 'jornal:filtrar_por_genero' %}" class="reset-button" style="text-decoration: none; font-size: 0.9em;">
+                            Filtrar Notícias
+                        </a>
+                    </div>
                     
                 </div>
             </div>

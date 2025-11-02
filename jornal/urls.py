@@ -10,8 +10,9 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     
     path('favoritos/', views.ver_favoritos, name='favoritos'), 
-    
     path('favorito/toggle/<int:noticia_id>/', views.toggle_favorito, name='toggle_favorito'),
+
+    path('filtrar/', views.filtrar_por_genero, name='filtrar_por_genero'),
 
     path('adicionar-noticia/', views.add_aos_fav, name="add"),
     path('favoritos/adicionar/<int:noticia_id>/', views.add_aos_fav, name='add_aos_fav'),

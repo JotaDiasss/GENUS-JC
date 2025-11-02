@@ -44,8 +44,6 @@ def index(request):
             generos_favoritos = profile.generos_favoritos.all()
 
             if generos_favoritos.exists():
-                
-                # Busca notícias apenas pelos gêneros, sem excluir
                 noticias_recomendadas = Noticia.objects.filter(
                     generos__in=generos_favoritos
                 ).distinct().order_by('-data')[:8]
@@ -143,3 +141,39 @@ def toggle_favorito(request, noticia_id):
             return JsonResponse({'status': 'removed'})
     
     return JsonResponse({'status': 'error'}, status=400)
+
+def filtrar_por_genero(request):
+    all_genres = Genero.objects.all().order_by('nome')
+    selected_genres_names = request.GET.getlist('genres')
+    
+    noticias_filtradas = []
+    titulo_pagina = "Filtrar Notícias por Gênero"
+    search_error = None
+    form_submitted = 'genres' in request.GET
+
+    if form_submitted:
+        if not selected_genres_names:
+            search_error = "Por favor, selecione pelo menos 1 gênero."
+        elif len(selected_genres_names) > 2:
+            search_error = "Você só pode selecionar até 2 gêneros."
+        else:
+            
+            # Lógica de filtro AND (deve conter TODOS os gêneros)
+            noticias_filtradas = Noticia.objects.all()
+            for genre_name in selected_genres_names:
+                noticias_filtradas = noticias_filtradas.filter(generos__nome=genre_name)
+            
+            noticias_filtradas = noticias_filtradas.distinct().order_by('-data')
+            
+            titulo_pagina = f"Resultados para: {', '.join(selected_genres_names)}"
+
+    context = {
+        'all_genres': all_genres,
+        'noticias': noticias_filtradas,
+        'selected_genres_names': selected_genres_names,
+        'titulo_pagina': titulo_pagina,
+        'search_error': search_error,
+        'form_submitted': form_submitted,
+    }
+    
+    return render(request, 'filtrar_noticias.html', context)
