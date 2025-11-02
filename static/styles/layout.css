@@ -79,6 +79,7 @@ header {
     padding: 15px 20px;
     background-color: #f8f8f8;
     border-top: 1px solid #eee;
+    flex-direction: column;
 }
 
 .div-pesquisa section {
@@ -420,4 +421,10 @@ footer .copyright {
 }
 .reset-button:hover {
     background-color: #e0e0e0;
+}
+
+.noticias-relacionadas {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 15px;
 }

@@ -3,6 +3,10 @@
 
 {% block title %}{{ noticia.titulo }} | GENUS{% endblock %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'styles/favoritos.css' %}">
+{% endblock %}
+
 {% block content %}
 <article class="noticia-detalhe">
     <h1>{{ noticia.titulo }}</h1>
@@ -35,6 +39,25 @@
         <p>Faça login para adicionar aos favoritos.</p>
     {% endif %}
 </article>
+
+{% if noticias_relacionadas %}
+<section class="noticias-relacionadas">
+    <h2 class="titulo-principal" style="margin-top: 40px;">Notícias Relacionadas</h2>
+    
+    <div class="favoritos-grid"> 
+        {% for rel_noticia in noticias_relacionadas %}
+        <article class="noticia-card">
+            <h2 class="noticia-card-titulo">
+                <a href="{% url 'jornal:pagina_noticias' rel_noticia.slug %}">{{ rel_noticia.titulo }}</a>
+            </h2>
+            <p class="noticia-card-resumo">{{ rel_noticia.resumo }}</p>
+            <a href="{% url 'jornal:pagina_noticias' rel_noticia.slug %}" class="noticia-card-link">Leia mais</a>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
 {% endblock %}
 
 {% block extra_scripts %}

@@ -13,15 +13,29 @@ def lista_de_noticias(request):
     return render(request, 'index.html', { 'noticias': noticias})
 
 def pagina_noticias(request, slug):
-    noticia = Noticia.objects.get(slug=slug)
+    noticia = get_object_or_404(Noticia, slug=slug)
     
     is_favorito = False
     if request.user.is_authenticated:
         is_favorito = Favoritos.objects.filter(usuario=request.user, noticia=noticia).exists()
         
+    generos_da_noticia = noticia.generos.exclude(
+        nome__in=['Brasil', 'Geral']
+    )
+    
+    if not generos_da_noticia.exists():
+        generos_da_noticia = noticia.generos.all()
+
+    noticias_relacionadas = Noticia.objects.filter(
+        generos__in=generos_da_noticia
+    ).exclude(
+        id=noticia.id
+    ).distinct().order_by('-data')[:3]
+        
     context = {
         'noticia': noticia,
-        'is_favorito': is_favorito
+        'is_favorito': is_favorito,
+        'noticias_relacionadas': noticias_relacionadas
     }
     return render(request, 'pagina-noticia.html', context)
 
@@ -158,7 +172,6 @@ def filtrar_por_genero(request):
             search_error = "Você só pode selecionar até 2 gêneros."
         else:
             
-            # Lógica de filtro AND (deve conter TODOS os gêneros)
             noticias_filtradas = Noticia.objects.all()
             for genre_name in selected_genres_names:
                 noticias_filtradas = noticias_filtradas.filter(generos__nome=genre_name)
