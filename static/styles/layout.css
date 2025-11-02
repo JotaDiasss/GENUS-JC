@@ -290,3 +290,41 @@ footer .copyright {
     font-size: 14px;
     color: #888;
 }
+
+.lista-noticias.ultimas-noticias-scroll {
+    display: flex;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 25px;
+    width: auto; 
+    padding-left: 15px;
+    padding-right: 15px;
+    
+    /* Faz a barra de rolagem ficar mais sutil (WebKit/Blink) */
+    scrollbar-width: thin;
+    scrollbar-color: #ccc #f8f9fa;
+}
+
+.lista-noticias.ultimas-noticias-scroll::-webkit-scrollbar {
+    height: 8px;
+}
+
+.lista-noticias.ultimas-noticias-scroll::-webkit-scrollbar-track {
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.lista-noticias.ultimas-noticias-scroll::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+}
+
+.lista-noticias.ultimas-noticias-scroll .noticia-card {
+    flex: 0 0 320px;
+    margin-right: 15px;
+    margin-bottom: 0;
+}
+
+.lista-noticias.ultimas-noticias-scroll .noticia-card:last-child {
+    margin-right: 0;
+}

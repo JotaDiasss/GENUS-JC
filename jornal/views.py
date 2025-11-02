@@ -3,8 +3,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Noticia, Favoritos, Genero, Profile
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.models import User # OBSERVAÇÃO: Importado
-from django.contrib import messages # OBSERVAÇÃO: Importado
+from django.contrib.auth.models import User
+from django.contrib import messages
 
 def lista_de_noticias(request):
     noticias = Noticia.objects.all().order_by('-data')
@@ -23,7 +23,7 @@ def index(request):
             Q(detalhes__icontains=query)
         ).distinct().order_by('-data')
     else:
-        noticias = Noticia.objects.all().order_by('-data')
+        noticias = Noticia.objects.all().order_by('-data')[:8]
     contexto = {
         'noticias': noticias,
         'query': query,
@@ -58,33 +58,26 @@ def remover_dos_favoritos(request, noticia_id):
 
     return redirect('jornal:favoritos')
 
-# --- OBSERVAÇÃO: VIEW DE REGISTRO REESCRITA SEM O forms.py ---
 def register(request):
     if request.method == 'POST':
-        # 1. Pega os dados manualmente do formulário
         email = request.POST.get('email')
         password = request.POST.get('password')
         password2 = request.POST.get('password2')
 
-        # 2. Validação manual
         if password != password2:
             messages.error(request, 'As senhas não coincidem.')
             return render(request, 'registration/register.html')
 
-        # Usaremos o email como username
         if User.objects.filter(username=email).exists():
             messages.error(request, 'Este email já está cadastrado.')
             return render(request, 'registration/register.html')
         
-        # 3. Cria o usuário
         user = User.objects.create_user(username=email, email=email, password=password)
         user.save()
         
-        # 4. Loga o usuário e redireciona
         login(request, user)
         return redirect('jornal:index')
     
-    # Se for GET, apenas mostra a página
     return render(request, 'registration/register.html')
 
 

@@ -13,7 +13,9 @@
         {% else %}
             <h1 class="titulo-principal">Últimas Notícias</h1>
         {% endif %}
-        <div class="lista-noticias">
+
+        <div class="lista-noticias {% if not query %}ultimas-noticias-scroll{% endif %}">
+            
             {% for noticia in noticias %}
                 <article class="noticia-card">
                     <h2 class="noticia-card-titulo">
