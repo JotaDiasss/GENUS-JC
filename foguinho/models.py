@@ -1,39 +1,11 @@
 from django.db import models
-import datetime
+from django.contrib.auth.models import User
+from django.utils import timezone
 
-class Journal(models.Model):    
-    title = models.CharField(max_length=50)
-    created_by = models.CharField(max_length=200)
+class ArvoreAcesso(models.Model):
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+    sequencia_atual = models.IntegerField(default=0)
+    ultimo_acesso = models.DateField(null=True, blank=True)
 
-class Entrada(models.Model):
-    journal = models.ForeignKey(Journal, on_delete=models.CASCADE)
-    note = models.TextField()
-    date = models.DateField()  
-
-    def sequencia(journal):
-        sequenciatotal = 0
-        sequenciaatual = 0
-        hoje = datetime.date.today()
-        compareData = hoje + datetime.timedelta(1) # Tomorrow
-
-        # Using list() here pulls all the entries from the DB at once
-        # Gets all Entrada dates for this journal and whose dates are <= hoje
-        Entrada_datas = list(Entrada.objects.values("data").filter(journal=journal, date__lte = hoje).order_by("-data"))
-
-        for data in Entrada_datas:
-            # Get the difference btw the dates
-            delta = compareData - data
-
-            if delta.days == 1: # Keep the streak going!
-                sequenciaatual += 1
-            elif delta.days == 0: # Don't bother increasing the day if there's multiple ones on the same day
-                pass
-            else: # Awwww...
-                break # The current streak is done, exit the loop
-
-            compareData = data
-
-        if sequenciaatual > sequenciatotal:
-            sequenciatotal = sequenciaatual
-
-        return sequenciatotal
+    def __str__(self):
+        return f"{self.usuario.username} - {self.sequencia_atual} dias"

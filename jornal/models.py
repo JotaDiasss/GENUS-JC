@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.utils.text import slugify
-# OBSERVAÇÃO: Imports necessários para o Profile
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -34,8 +33,17 @@ class Noticia(models.Model):
     slug = models.SlugField(max_length=200, unique=True, blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.titulo)
+        if not self.slug or self.slug == "":
+            original_slug = slugify(self.titulo)
+            novo_slug = original_slug
+            contador = 1
+            
+            while Noticia.objects.filter(slug=novo_slug).exclude(id=self.id).exists():
+                novo_slug = f'{original_slug}-{contador}'
+                contador += 1
+            
+            self.slug = novo_slug
+            
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -71,19 +79,16 @@ class Favoritos(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
-   
     generos_favoritos = models.ManyToManyField(Genero, blank=True, related_name="perfis_favoritos")
 
     def __str__(self):
         return f'Perfil de {self.user.username}'
 
-# Função para criar um Perfil automaticamente quando um Usuário se registra
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
 
-# Função para salvar o Perfil
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()

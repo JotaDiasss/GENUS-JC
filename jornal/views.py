@@ -7,6 +7,11 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.http import JsonResponse
 import json
+from django.utils import timezone
+from datetime import timedelta
+
+from foguinho.models import ArvoreAcesso
+from foguinho.views import atualizar_sequencia_login, registrar_leitura_noticia
 
 def lista_de_noticias(request):
     noticias = Noticia.objects.all().order_by('-data')
@@ -18,6 +23,7 @@ def pagina_noticias(request, slug):
     is_favorito = False
     if request.user.is_authenticated:
         is_favorito = Favoritos.objects.filter(usuario=request.user, noticia=noticia).exists()
+        registrar_leitura_noticia(request.user)
         
     generos_da_noticia = noticia.generos.exclude(
         nome__in=['Brasil', 'Geral']
@@ -42,6 +48,14 @@ def pagina_noticias(request, slug):
 def index(request):
     query = request.GET.get('q') 
     noticias_recomendadas = []
+    sequencia_dias = 0
+
+    if request.user.is_authenticated:
+        try:
+            arvore = ArvoreAcesso.objects.get(usuario=request.user)
+            sequencia_dias = arvore.sequencia_atual
+        except ArvoreAcesso.DoesNotExist:
+            sequencia_dias = 0
     
     if query:
         noticias = Noticia.objects.filter(
@@ -69,6 +83,7 @@ def index(request):
         'noticias': noticias,
         'noticias_recomendadas': noticias_recomendadas,
         'query': query,
+        'sequencia_dias': sequencia_dias,
     }
     return render(request, 'index.html', contexto)
 
@@ -117,6 +132,9 @@ def register(request):
         user.save()
         
         login(request, user)
+        
+        atualizar_sequencia_login(user) 
+        
         return redirect('jornal:index')
     
     return render(request, 'registration/register.html')
