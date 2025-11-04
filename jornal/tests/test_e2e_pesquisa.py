@@ -13,14 +13,34 @@ driver = webdriver.Chrome(service=service)
 driver.get("http://127.0.0.1:8000/")
 
 try:
+    print("\nProcurando elemento de pesquisa")
     WebDriverWait(driver, 5).until (
         EC.presence_of_all_elements_located((By.ID, "openSearchButton"))
     )
-    print("\nElemento encontrado")
+    print("Elemento encontrado: Teste correto")
 
 except TimeoutException:
-    print("\nElemento não encontrado\n")
+    print("\nElemento não encontrado: Teste errado\n")
     sys.exit(1)
+
+open_search = driver.find_element(By.ID, "openSearchButton")
+open_search.click()
+
+seach_input = driver.find_element(By.ID, "searchInput")
+seach_input.clear()
+seach_input.send_keys("jsheiruvkihecfuysjhvseivgwkebjvrw" + Keys.ENTER)
+
+try:
+    print("\nTestando pesquisa errada")
+    WebDriverWait(driver, 5).until (
+        EC.presence_of_all_elements_located((By.CLASS_NAME, "noticia-card"))
+    )
+    print("\nElemento encontrado: Teste errado\n")
+    sys.exit(1)
+
+except TimeoutException:
+    print("Elemento não encontrado: Teste correto")
+    pass
 
 open_search = driver.find_element(By.ID, "openSearchButton")
 open_search.click()
@@ -33,13 +53,14 @@ noticia_link = driver.find_element(By.PARTIAL_LINK_TEXT, "CCJ")
 noticia_link.click()
 
 try:
+    print("\nTestando url da pagina")
     WebDriverWait(driver, 5).until (
         EC.url_contains("noticia/CCJ")
     )
-    print("\nUrl correta")
+    print("Url esperada: Teste correto")
 
 except TimeoutError:
-    print("\nUrl incorreta\n")
+    print("\nUrl inesperada\n")
     sys.exit(1)
 
 print("\nTeste concluido com exito\n")
