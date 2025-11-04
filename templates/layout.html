@@ -32,7 +32,7 @@
                 <nav class="nav-jc">
                     <a href="{% url 'jornal:index' %}"><img src="{% static 'assets/imgs/Logo-JC.png' %}" alt="Logo-JC"></a>
                     <div>
-                        <button onclick="openSearch()"> <i class="search-adjust"> <img src="{% static 'assets/icons/search.png' %}" alt="serach-icon"></i></button>
+                        <button onclick="openSearch()" id="openSearchButton"> <i class="search-adjust"> <img src="{% static 'assets/icons/search.png' %}" alt="serach-icon"></i></button>
                         <button class="menu-button" id="menuButton" onclick="openMenu()">
                             <div></div>
                             <div></div>
@@ -55,7 +55,7 @@
                     <form method="GET" action="{% url 'jornal:index' %}" style="width: 100%;">
                         <section>
                             <button type="submit" class="pesquisar"><i class="search-adjust"><img src="{% static 'assets/icons/search.png' %}" alt="pesquisar"></i></button>
-                            <input type="text" name="q" placeholder="pesquise aqui">
+                            <input type="text" name="q" placeholder="pesquise aqui" id="searchInput">
                         </section>
                     </form>
                     
@@ -64,7 +64,6 @@
                             Filtrar Notícias
                         </a>
                     </div>
-                    
                 </div>
             </div>
         </header>
