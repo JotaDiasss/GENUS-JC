@@ -16,6 +16,7 @@ try:
     WebDriverWait(driver, 5).until (
         EC.presence_of_all_elements_located((By.ID, "openSearchButton"))
     )
+    print("\nElemento encontrado")
 
 except TimeoutException:
     print("\nElemento não encontrado\n")
@@ -26,16 +27,16 @@ open_search.click()
 
 seach_input = driver.find_element(By.ID, "searchInput")
 seach_input.clear()
-seach_input.send_keys("noticia qualquer" + Keys.ENTER)
+seach_input.send_keys("CCJ" + Keys.ENTER)
 
-noticia_link = driver.find_element(By.PARTIAL_LINK_TEXT, "noticia qualquer")
+noticia_link = driver.find_element(By.PARTIAL_LINK_TEXT, "CCJ")
 noticia_link.click()
 
 try:
     WebDriverWait(driver, 5).until (
-        EC.url_contains("pagina-noticia")
+        EC.url_contains("noticia/CCJ")
     )
-    print("\nUrl correta\n")
+    print("\nUrl correta")
 
 except TimeoutError:
     print("\nUrl incorreta\n")
