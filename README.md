@@ -27,7 +27,7 @@ O grupo GENUS estruturou a solução em **três frentes principais**:
 - [Documento de Histórias de Usuário](https://docs.google.com/document/d/1aFmJWQ57J6yf8G54d8f4gd4CUoo7hbqy8WJeeoRDG_I/edit?usp=drivesdk)
 
 ## Link Deploy
-- [Clique aqui](https://arthurjornal.pythonanywhere.com)
+- [Clique aqui](https://genuss.pythonanywhere.com)
 
 ---
 
