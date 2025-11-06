@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-
+from . import deploy_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     
@@ -27,4 +27,5 @@ urlpatterns = [
     
     # Esta linha inclui todas as URLs do seu app (ex: /register/, /configuracoes/, etc.)
     path('', include('jornal.urls')),
+    path('webhook/deploy/', deploy_views.deploy_webhook, name='deploy_webhook'),
 ]
