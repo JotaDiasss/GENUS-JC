@@ -28,4 +28,8 @@ urlpatterns = [
     # Esta linha inclui todas as URLs do seu app (ex: /register/, /configuracoes/, etc.)
     path('', include('jornal.urls')),
     path('webhook/deploy/', deploy_views.deploy_webhook, name='deploy_webhook'),
+    
+    path('avaliacoes/', include('aval.urls')),
+
+    path('webhook/deploy/', deploy_views.deploy_webhook, name='deploy_webhook'),
 ]
