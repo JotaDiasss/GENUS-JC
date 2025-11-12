@@ -1,3 +1,4 @@
+# Em jornal/urls.py
 from django.urls import path
 from . import views 
 
@@ -20,4 +21,12 @@ urlpatterns = [
     
     path('', views.index, name='index'),
     
+    # --- NOVAS URLS PARA O ADMIN SECRETO ---
+    path('admin-secreto/', views.admin_secreto_lista, name='admin_secreto_lista'),
+    path('admin-secreto/criar/', views.admin_secreto_criar, name='admin_secreto_criar'),
+    path('admin-secreto/editar/<int:noticia_id>/', views.admin_secreto_editar, name='admin_secreto_editar'),
+    path('admin-secreto/apagar/<int:noticia_id>/', views.admin_secreto_apagar, name='admin_secreto_apagar'),
+
+    # --- ADIÇÃO DESTA NOVA URL ---
+    path('admin-secreto/popular-generos/', views.admin_secreto_popular_generos, name='admin_secreto_popular_generos'),
 ]
