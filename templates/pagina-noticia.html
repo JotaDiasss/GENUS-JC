@@ -5,39 +5,52 @@
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'styles/favoritos.css' %}">
+    
+    <link rel="stylesheet" href="{% static 'styles/ouvir_noticia.css' %}">
 {% endblock %}
 
 {% block content %}
 <article class="noticia-detalhe">
-    <h1>{{ noticia.titulo }}</h1>
+    
+    <h1 id="noticia-titulo">{{ noticia.titulo }}</h1>
 
     <div class="noticia-meta">
         <span>Por: <strong>{{ noticia.reporter }}</strong></span>
         <span>Publicado em: {{ noticia.data|date:"d/m/Y \à\s H:i" }}</span>
     </div>
 
-    <div class="corpo-noticia">
+    <div class="corpo-noticia" id="noticia-corpo">
         {{ noticia.detalhes|linebreaks }}
     </div>
 
-    {% if user.is_authenticated %}
+    <div class="noticia-acoes" style="margin-top: 20px;">
         
         <button 
-            id="btn-toggle-favorito"
-            class="noticia-card-link btn-favorito {% if is_favorito %}favorito-ativo{% endif %}"
-            data-noticia-id="{{ noticia.id }}"
-            data-toggle-url="{% url 'jornal:toggle_favorito' noticia.id %}"
+            id="btn-ouvir-noticia" 
+            class="noticia-card-link btn-ouvir"
         >
-            {% if is_favorito %}
-                Remover dos Favoritos
-            {% else %}
-                Adicionar aos Favoritos
-            {% endif %}
+            Ouvir Notícia
         </button>
         
-    {% else %}
-        <p>Faça login para adicionar aos favoritos.</p>
-    {% endif %}
+        {% if user.is_authenticated %}
+            <button 
+                id="btn-toggle-favorito"
+                class="noticia-card-link btn-favorito {% if is_favorito %}favorito-ativo{% endif %}"
+                data-noticia-id="{{ noticia.id }}"
+                data-toggle-url="{% url 'jornal:toggle_favorito' noticia.id %}"
+            >
+                {% if is_favorito %}
+                    Remover dos Favoritos
+                {% else %}
+                    Adicionar aos Favoritos
+                {% endif %}
+            </button>
+            
+        {% else %}
+            <p>Faça login para adicionar aos favoritos.</p>
+        {% endif %}
+    </div>
+
 </article>
 
 {% if noticias_relacionadas %}
@@ -60,6 +73,9 @@
 
 {% endblock %}
 
+
 {% block extra_scripts %}
     <script src="{% static 'scripts/favoritos.js' %}"></script>
+
+    <script src="{% static 'scripts/ouvir_noticia.js' %}"></script>
 {% endblock %}
