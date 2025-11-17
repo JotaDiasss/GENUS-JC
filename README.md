@@ -21,10 +21,11 @@ O grupo GENUS estruturou a solução em **três frentes principais**:
 - Frontend: HTML, CSS, JavaScript
 - Backend: Django / Python
 - Banco de Dados: SQLite
-- Controle de Versão: Git e GitHub
+- Controle de Versão: Git e GitHub
 
 ## Entregas Semanais
 - [Documento de Histórias de Usuário](https://docs.google.com/document/d/1aFmJWQ57J6yf8G54d8f4gd4CUoo7hbqy8WJeeoRDG_I/edit?usp=drivesdk)
+- [Relatório da Programação em Par](https://docs.google.com/document/d/1xq8J3EXIh-6UywgYfKDu6SvC37qS3sQsuFjnGYJRfYs/edit?usp=drivesdk)
 
 ## Link Deploy
 - [Clique aqui](https://genuss.pythonanywhere.com)
@@ -38,7 +39,7 @@ O grupo GENUS estruturou a solução em **três frentes principais**:
 - Luiz Felipe de Siqueira Gonçalves | lfsg@cesar.school | Ciência da Computação | Dev Back-end
 - Maria Emilia Dos Santos Silva | mess@cesar.school | Ciência da Computação | Dev Back-end
 - Mickael Evandro Inácio Da Silva | meis@cesar.school | Design | Design UI
-- Nathalia Alcantara Dias Rodrigues | nadr@cesar.school | Design | Designe  UX
+- Nathalia Alcantara Dias Rodrigues | nadr@cesar.school | Design | Designe UX
 - Nicole Maria Brito de Sá Barreto | nmbsb@cesar.school | Ciência da Computação | Dev Front-end
 - Sarah Evelyn Gomes Maia da Silva | segms@cesar.school | Design | Designe UI
 - Vinícius Pessoa De Mello Duarte | vpmd@cesar.school | Ciência da Computação | Dev Back-end
