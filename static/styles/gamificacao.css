@@ -1,0 +1,36 @@
+.arrow-back-link {
+    cursor: pointer;
+}
+
+.gamificacao-info {
+    background: linear-gradient(to bottom, #8bc63f00, #8CC63F, #5E9800);
+    display: flex;
+    flex-direction: center;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.gamificacao-info > h1 {
+    color: #fff;
+    font-size: 40px;
+}
+
+.gamificacao-statistics {
+    padding: 20px, 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+@media screen and (min-width: 700px){
+    .gamificacao-info {
+        background: linear-gradient(to bottom, #8bc63f00, #8CC63F, #5E9800);
+        display: flex;
+        flex-direction: center;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+    }
+}

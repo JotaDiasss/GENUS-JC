@@ -28,5 +28,5 @@ urlpatterns = [
     path('admin-secreto/apagar/<int:noticia_id>/', views.admin_secreto_apagar, name='admin_secreto_apagar'),
 
     # --- ADIÇÃO DESTA NOVA URL ---
-    path('admin-secreto/popular-generos/', views.admin_secreto_popular_generos, name='admin_secreto_popular_generos'),
+    path('admin-secreto/popular-generos/', views.admin_secreto_popular_generos, name='admin_secreto_popular_generos')
 ]

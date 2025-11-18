@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block title %}Minhas Notícias Favoritas{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'styles/gamificacao.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    <a href="#" onclick=onclick="window.history.back()" class="arrow-back-link"><i><img src="{% static 'assets/icons/backarrow.png' %}" alt="Voltar"></a>
+    <div class="gamificacao-info">
+        <img src="{% static 'assets/imgs/Arvore-3' %}" alt="arvore">
+        <h1>Árvore</h1>
+        <section class="gamificacao-statistics">
+            <div>
+                <p>Dias consecutivos</p>
+            </div>
+            <hr>
+            <div>
+                <p>Dias para o Proximo visual</p>
+            </div>
+            <hr>
+            <div>
+                <p>Blablabla</p>
+            </div>
+        </section>
+    </div>
+
+{% endblock %}

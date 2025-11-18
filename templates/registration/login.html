@@ -16,7 +16,7 @@
             </nav>
             <nav class="nav-jc">
                 <a href="{% url 'jornal:index' %}"><img src="{% static 'assets/imgs/Logo-JC.png' %}" alt="Logo-JC"></a>
-                <a href="{% url 'jornal:index' %}"><i><img src="{% static 'assets/icons/backarrow.png' %}" alt="Voltar"></i></a>
+                <a href="#"><i><img src="{% static 'assets/icons/backarrow.png' %}" onclick="window.history.back(); return false;" alt="Voltar"></i></a>
             </nav>
         </div>
     </header>
