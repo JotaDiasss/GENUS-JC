@@ -1,4 +1,3 @@
-# Em jornal/views.py
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Noticia, Favoritos, Genero, Profile
@@ -7,14 +6,11 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.http import JsonResponse
-import json
 from django.utils import timezone
 from datetime import timedelta
 
-from foguinho.models import ArvoreAcesso
+# Importa as funções do outro app
 from foguinho.views import atualizar_sequencia_login, registrar_leitura_noticia
-
-# Importe o novo formulário
 from .forms import NoticiaForm
 
 def lista_de_noticias(request):
@@ -36,7 +32,7 @@ def pagina_noticias(request, slug):
     if not generos_da_noticia.exists():
         generos_da_noticia = noticia.generos.all()
 
-    noticias_relacionADAS = Noticia.objects.filter(
+    noticias_relacionadas = Noticia.objects.filter(
         generos__in=generos_da_noticia
     ).exclude(
         id=noticia.id
@@ -45,27 +41,22 @@ def pagina_noticias(request, slug):
     context = {
         'noticia': noticia,
         'is_favorito': is_favorito,
-        'noticias_relacionadas': noticias_relacionADAS
+        'noticias_relacionadas': noticias_relacionadas
     }
     return render(request, 'pagina-noticia.html', context)
 
 def index(request):
     query = request.GET.get('q') 
     
-    # --- NOSSA LÓGICA SECRETA ---
     if query and query == "superuserlegalmentelegal":
         return redirect('jornal:admin_secreto_lista')
-    # --- FIM DA LÓGICA ---
 
     noticias_recomendadas = []
     sequencia_dias = 0
 
     if request.user.is_authenticated:
-        try:
-            arvore = ArvoreAcesso.objects.get(usuario=request.user)
-            sequencia_dias = arvore.sequencia_atual
-        except ArvoreAcesso.DoesNotExist:
-            sequencia_dias = 0
+        # Usa a função importada do foguinho
+        sequencia_dias = atualizar_sequencia_login(request.user)
     
     if query:
         noticias = Noticia.objects.filter(
@@ -219,10 +210,6 @@ def filtrar_por_genero(request):
     
     return render(request, 'filtrar_noticias.html', context)
 
-
-# --- NOVAS VIEWS PARA O ADMIN SECRETO ---
-# (Coloquei @login_required para uma segurança mínima)
-
 @login_required
 def admin_secreto_lista(request):
     noticias = Noticia.objects.all().order_by('-data')
@@ -267,13 +254,10 @@ def admin_secreto_apagar(request, noticia_id):
     
     return render(request, 'admin_secreto_apagar_confirm.html', {'noticia': noticia})
 
-
-# --- ADIÇÃO DESTA NOVA VIEW ---
 @login_required
 def admin_secreto_popular_generos(request):
     if request.method == 'POST':
         
-        # 1. Lista dos 8 gêneros que você quer
         LISTA_GENEROS = [
             "Economia & Negócios",
             "Política",
@@ -285,14 +269,11 @@ def admin_secreto_popular_generos(request):
             "Cultura",
         ]
         
-        # 2. Apaga os gêneros "a" e "b"
         Genero.objects.filter(nome__in=["a", "b"]).delete()
         
-        # 3. Cria os 8 novos gêneros (só se eles não existirem)
         for nome_genero in LISTA_GENEROS:
             Genero.objects.get_or_create(nome=nome_genero)
         
         messages.success(request, 'Gêneros atualizados! "a" e "b" removidos e os 8 gêneros padrão foram criados.')
     
-    # Redireciona de volta para a lista
     return redirect('jornal:admin_secreto_lista')
