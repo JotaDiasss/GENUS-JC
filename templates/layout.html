@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -7,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}GENUS{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'styles/layout.css' %}">
-    
     {% block head_extra %}{% endblock %}
 </head>
 <body>
@@ -18,7 +16,6 @@
             </button>
         </div>
         
-        
         <ul style="list-style: none; padding: 20px; font-size: 1.2em;">
             <li style="margin-bottom: 15px;">
                 <a href="{% url 'jornal:favoritos' %}" style="text-decoration: none; color: #f333;">Noticias Favoritas</a>
@@ -27,7 +24,6 @@
                 <a href="{% url 'aval:feedback' %}" style="text-decoration: none; color: #f333;">Feedback</a>
             </li>
         </ul>
-        
     </aside>
     <div class="overlay" id="overlay"> </div>
         <header>
@@ -45,7 +41,7 @@
                             <div></div>
                         </button>
                         {% if user.is_authenticated %}
-                            <a href="{% url 'jornal:gamificacao' %}"><img src="" alt="Gamificacao"></a>
+                            <a href="{% url 'jornal:gamificacao' %}"><img src="{% static 'assets/icons/tree.png' %}" alt="Gamificacao"></a>
                             
                             <a href="{% url 'jornal:configuracoes_conta' %}"><i><img src="{% static 'assets/icons/Avatar.png' %}" alt="user-pic" class="icon-perfil"></i></a>
                         
