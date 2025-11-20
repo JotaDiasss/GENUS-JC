@@ -19,6 +19,12 @@
         <span>Publicado em: {{ noticia.data|date:"d/m/Y \à\s H:i" }}</span>
     </div>
 
+    {% if noticia.imagem %}
+        <div class="noticia-imagem-destaque" style="margin: 20px 0; text-align: center;">
+            <img src="{{ noticia.imagem.url }}" alt="{{ noticia.titulo }}" style="max-width: 100%; height: auto; border-radius: 8px;">
+        </div>
+    {% endif %}
+
     <div class="corpo-noticia" id="noticia-corpo">
         {{ noticia.detalhes|linebreaks }}
     </div>

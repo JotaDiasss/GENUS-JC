@@ -1,4 +1,3 @@
-# Em jornal/forms.py
 from django import forms
 from .models import Noticia, Genero
 
@@ -11,9 +10,10 @@ class NoticiaForm(forms.ModelForm):
 
     class Meta:
         model = Noticia
-        fields = ['titulo', 'resumo', 'detalhes', 'reporter', 'generos']
+        fields = ['titulo', 'imagem', 'resumo', 'detalhes', 'reporter', 'generos']
         widgets = {
             'titulo': forms.TextInput(attrs={'class': 'form-control'}),
+            'imagem': forms.ClearableFileInput(attrs={'class': 'form-control'}),
             'resumo': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'detalhes': forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
             'reporter': forms.TextInput(attrs={'class': 'form-control'}),

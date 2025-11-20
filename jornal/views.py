@@ -9,7 +9,6 @@ from django.http import JsonResponse
 from django.utils import timezone
 from datetime import timedelta
 
-# Importa as funções do outro app
 from foguinho.views import atualizar_sequencia_login, registrar_leitura_noticia
 from .forms import NoticiaForm
 
@@ -55,7 +54,6 @@ def index(request):
     sequencia_dias = 0
 
     if request.user.is_authenticated:
-        # Usa a função importada do foguinho
         sequencia_dias = atualizar_sequencia_login(request.user)
     
     if query:
@@ -218,7 +216,7 @@ def admin_secreto_lista(request):
 @login_required
 def admin_secreto_criar(request):
     if request.method == 'POST':
-        form = NoticiaForm(request.POST)
+        form = NoticiaForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             messages.success(request, 'Notícia criada com sucesso!')
@@ -233,7 +231,7 @@ def admin_secreto_editar(request, noticia_id):
     noticia = get_object_or_404(Noticia, id=noticia_id)
     
     if request.method == 'POST':
-        form = NoticiaForm(request.POST, instance=noticia)
+        form = NoticiaForm(request.POST, request.FILES, instance=noticia)
         if form.is_valid():
             form.save()
             messages.success(request, 'Notícia atualizada com sucesso!')

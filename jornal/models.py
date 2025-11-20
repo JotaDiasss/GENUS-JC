@@ -19,6 +19,7 @@ class Genero(models.Model):
 
 class Noticia(models.Model):
     titulo = models.CharField(max_length=200, null=False)
+    imagem = models.ImageField(upload_to='noticias/', blank=True, null=True)
     resumo = models.TextField(null=False)
     detalhes = models.TextField(null=False)
     data = models.DateTimeField("Postado em: ", default=timezone.now)

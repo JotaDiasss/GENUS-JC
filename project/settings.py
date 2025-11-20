@@ -131,6 +131,10 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
+# --- CONFIGURAÇÃO DE MÍDIA (IMAGENS) ---
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # OBSERVAÇÃO: Adicionadas URLs de redirecionamento de Login e Logout
 LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/' # Esta linha envia o usuário para a home após o logout
+LOGOUT_REDIRECT_URL = '/'

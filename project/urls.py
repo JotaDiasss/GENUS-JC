@@ -1,35 +1,16 @@
-"""
-URL configuration for project project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 from . import deploy_views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    
-    # OBSERVAÇÃO: Removida a linha 'accounts/register/' duplicada מכאן.
-    
-    # Esta linha cuida das URLs de login, logout, etc. (ex: /accounts/login/)
     path('accounts/', include('django.contrib.auth.urls')),
-    
-    # Esta linha inclui todas as URLs do seu app (ex: /register/, /configuracoes/, etc.)
     path('', include('jornal.urls')),
     path('webhook/deploy/', deploy_views.deploy_webhook, name='deploy_webhook'),
-    
     path('avaliacoes/', include('aval.urls')),
-
-    path('webhook/deploy/', deploy_views.deploy_webhook, name='deploy_webhook'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
