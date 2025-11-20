@@ -222,7 +222,7 @@ def admin_secreto_criar(request):
             messages.success(request, 'Notícia criada com sucesso!')
             return redirect('jornal:admin_secreto_lista')
     else:
-        form = NoticiaForm()
+        form = NoticiaForm(initial={'data': timezone.localtime(timezone.now())})
     
     return render(request, 'admin_secreto_form.html', {'form': form, 'tipo': 'Criar'})
 
