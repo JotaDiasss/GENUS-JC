@@ -144,9 +144,21 @@ def configuracoes_conta(request):
     profile = request.user.profile
     
     if request.method == 'POST':
-        generos_selecionados_nomes = request.POST.getlist('genres')
-        generos_objs = Genero.objects.filter(nome__in=generos_selecionados_nomes)
-        profile.generos_favoritos.set(generos_objs)
+        tipo_form = request.POST.get('tipo_form')
+
+        if tipo_form == 'foto':
+            if request.POST.get('remover_foto'):
+                profile.foto = None
+                profile.save()
+            elif 'foto' in request.FILES:
+                profile.foto = request.FILES['foto']
+                profile.save()
+        
+        elif tipo_form == 'generos':
+            generos_selecionados_nomes = request.POST.getlist('genres')
+            generos_objs = Genero.objects.filter(nome__in=generos_selecionados_nomes)
+            profile.generos_favoritos.set(generos_objs)
+
         return redirect('jornal:configuracoes_conta')
 
     all_genres = Genero.objects.all()

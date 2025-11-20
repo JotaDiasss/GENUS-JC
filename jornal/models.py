@@ -80,6 +80,8 @@ class Favoritos(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+   
+    foto = models.ImageField(upload_to='perfis/', blank=True, null=True)
     generos_favoritos = models.ManyToManyField(Genero, blank=True, related_name="perfis_favoritos")
 
     def __str__(self):
