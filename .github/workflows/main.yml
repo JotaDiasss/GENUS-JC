@@ -32,25 +32,41 @@ jobs:
       PA_DOMAIN: ${{ secrets.PA_DOMAIN }}
 
     steps:
-      - name: 1. Executar comandos de deploy via API (Git Pull, Migrações)
+      - name: 1. Fazer checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: 2. Enviar arquivo deploy.sh para PythonAnywhere
         run: |
-          PROJECT_PATH="/home/${{ env.PA_USERNAME }}/genuss.pythonanywhere.com"
-      
-          COMMAND_STRING="cd ${PROJECT_PATH}
-          git pull origin main
-          pip install -r requirements.txt
-          python manage.py collectstatic --noinput
-          python manage.py migrate"
-      
-          echo "Executando comandos no PythonAnywhere..."
+          echo "Enviando deploy.sh para PythonAnywhere..."
+          
+          curl -X PUT \
+            -H "Authorization: Token ${{ env.PA_API_TOKEN }}" \
+            --upload-file deploy.sh \
+            "https://www.pythonanywhere.com/api/v0/user/${{ env.PA_USERNAME }}/files/path/home/${{ env.PA_USERNAME }}/deploy.sh"
+
+      - name: 3. Tornar o deploy.sh executável
+        run: |
+          echo "Tornando deploy.sh executável..."
+          
           curl -X POST \
             -H "Authorization: Token ${{ env.PA_API_TOKEN }}" \
             -H "Content-Type: application/json" \
-            -d "{\"commands\": \"${COMMAND_STRING}\"}" \
+            -d '{"commands": "chmod +x ~/deploy.sh"}' \
             "https://www.pythonanywhere.com/api/v0/user/${{ env.PA_USERNAME }}/bash/"
 
-      - name: 2. Recarregar (Reload) a Aplicação Web
+      - name: 4. Executar o deploy.sh no PythonAnywhere
+        run: |
+          echo "Executando deploy.sh remoto..."
+          
+          curl -X POST \
+            -H "Authorization: Token ${{ env.PA_API_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{"commands": "~/deploy.sh"}' \
+            "https://www.pythonanywhere.com/api/v0/user/${{ env.PA_USERNAME }}/bash/"
+
+      - name: 5. Fazer reload da aplicação
         run: |
           echo "Recarregando a aplicação web..."
-          curl -s -X POST "https://www.pythonanywhere.com/api/v0/user/${{ env.PA_USERNAME }}/webapps/${{ env.PA_DOMAIN }}/reload/" \
-          -H "Authorization: Token ${{ env.PA_API_TOKEN }}"
+          curl -s -X POST \
+            "https://www.pythonanywhere.com/api/v0/user/${{ env.PA_USERNAME }}/webapps/${{ env.PA_DOMAIN }}/reload/" \
+            -H "Authorization: Token ${{ env.PA_API_TOKEN }}"
